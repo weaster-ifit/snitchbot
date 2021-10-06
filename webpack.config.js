@@ -36,8 +36,9 @@ module.exports = (env) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        __PACKAGE_NAME__: `"${package.name.replace('@ifit/', '')}"`,
-        __PACKAGE_VERSION__: `"${package.version}"`
+        __PACKAGE_NAME__: `"${package.name}"`,
+        __PACKAGE_VERSION__: `"${package.version}"`,
+        __IS_PRODUCTION_BUILD__: `${env.PRODUCTION === true}`
       })
     ]
   }

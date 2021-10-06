@@ -6,6 +6,7 @@ interface LogSyncEvent extends Event {
 
 declare var __PACKAGE_NAME__: string;
 declare var __PACKAGE_VERSION__: string;
+declare var __IS_PRODUCTION_BUILD__: boolean;
 
 (function() {
   window.addEventListener(ReportLogs, (e: LogSyncEvent) => {
@@ -125,7 +126,8 @@ declare var __PACKAGE_VERSION__: string;
 
   const header = document.createElement('div');
   header.className = 'header';
-  header.textContent = `${__PACKAGE_NAME__} v${__PACKAGE_VERSION__}`;
+  const build = __IS_PRODUCTION_BUILD__ ? '' : '(local)';
+  header.textContent = `${__PACKAGE_NAME__} v${__PACKAGE_VERSION__} ${build}`;
   aside.appendChild(header);
 
   const debug = document.createElement('div');
