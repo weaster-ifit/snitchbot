@@ -1,0 +1,6 @@
+*
+
+!dist
+!dist/base.js
+!dist/bulk.js
+!package.json

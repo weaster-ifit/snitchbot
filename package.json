@@ -1,0 +1,36 @@
+{
+  "name": "@ifit/snitchbot",
+  "version": "1.0.0",
+  "description": "Simple real-time logging tool for embedded webviews lacking convenient access to dev tools",
+  "main": "dist/base.js",
+  "scripts": {
+    "build": "webpack --mode=development",
+    "build-prod": "webpack --mode=production --env PRODUCTION"
+  },
+  "author": "",
+  "browserslist": {
+    "production": [
+      "Chrome > 38",
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "Chrome > 38",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@ifit/ts-config": "^2.3.0",
+    "google-closure-compiler": "^20210601.0.0",
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.3.5",
+    "webpack": "^5.48.0",
+    "webpack-cli": "^4.7.2"
+  },
+  "dependencies": {
+    "launchdarkly-js-client-sdk": "^2.19.2"
+  }
+}

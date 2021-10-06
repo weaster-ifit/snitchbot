@@ -1,0 +1,16 @@
+{
+  "extends": "@ifit/ts-config/compiler-options/node10",
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable"
+    ]
+  },
+  "include": ["./src"],
+  "exclude": [
+    "out",
+    "**/*.test.ts"
+  ]
+}
