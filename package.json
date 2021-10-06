@@ -1,6 +1,6 @@
 {
   "name": "snitchbot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple real-time logging tool for embedded webviews lacking convenient access to dev tools",
   "main": "dist/base.js",
   "scripts": {
