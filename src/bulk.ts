@@ -1,9 +1,11 @@
 import { ReportLogs, LogsHandled } from './common';
+import { getNextColor } from './color';
 
 interface LogSyncEvent extends Event {
   detail: any
 }
 
+declare var __MAIN_STYLE__: string;
 declare var __PACKAGE_NAME__: string;
 declare var __PACKAGE_VERSION__: string;
 declare var __IS_PRODUCTION_BUILD__: boolean;
@@ -14,15 +16,6 @@ declare var __IS_PRODUCTION_BUILD__: boolean;
     window.dispatchEvent(new CustomEvent(LogsHandled, {}));
   });
 
-  const colors = [
-    [0, 140, 50],
-    [95, 92, 255],
-    [4, 199, 163],
-    [212, 9, 2],
-    [232, 145, 5],
-    [131, 33, 217],
-    [179, 4, 123]
-  ];
   const logColors = {};
 
   let open = false;
@@ -39,86 +32,7 @@ declare var __IS_PRODUCTION_BUILD__: boolean;
   document.body.appendChild(toggler);
 
   const style = document.createElement('style');
-  style.textContent = `
-    .toggler {
-      position: absolute;
-      cursor: pointer;
-      top: 15px;
-      right: 15px;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: green;
-      transform: rotateZ(0);
-      transition: all .5s;
-      color: white;
-      z-index: 1001
-    }
-    aside {
-      font-family: sans-serif;
-      position: fixed;
-      top: 40px;
-      width: 0;
-      transition: all .5s;
-      border: 1px solid #333;
-      box-shadow: 0 0 2px #FFF;
-      padding: 0;
-      overflow: hidden;
-      z-index: 1000;
-      right: -820px;
-      width: 800px;
-    }
-    aside.active {
-      right: -5px;
-    }
-    @media (max-width: 888px) {
-      aside {
-        right: calc(0 - 90vw - 20px);
-      }
-      aside.active {
-        width: 90vw;
-      }
-    }
-      aside .header {
-        padding: 5px;
-        font-size: 10px;
-        color: white;
-        background-color: #111;
-      }
-      aside .wrapper {
-        height: 100%;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        height: calc(90vh - 60px);
-        background-color:#333;
-      }
-      aside .entry {
-        margin: 10px 10px 10px 20px;
-        padding: 5px;
-        color: rgb(255, 255, 255);
-        text-shadow: 0 0 3px black;
-        width: calc(100% - 55px);
-        border: 1px solid;
-      }
-        .entry h2 {
-          margin: 0 0 10px;
-          padding: 3px 0 3px 5px;
-          text-align: left;
-          font-size: 12px;
-        }
-        .entry .timestamp {
-          font-size: 10px;
-        }
-        .entry pre {
-          padding: 5px;
-          background-color: #FEFEFE;
-          color: #333;
-          overflow: scroll;
-          text-shadow: none;
-        }`;
+  style.textContent = __MAIN_STYLE__;
   document.body.appendChild(style);
 
   const aside = document.createElement('aside');
@@ -141,9 +55,7 @@ declare var __IS_PRODUCTION_BUILD__: boolean;
         log.rgb = rgb;
       } else {
         if (!logColors[type]) {
-          let color = colors.shift();
-          logColors[type] = color;
-          colors.push(color);
+          logColors[type] = getNextColor();
         } 
         log.rgb = logColors[type];
       }

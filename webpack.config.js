@@ -36,6 +36,7 @@ module.exports = (env) => {
     },
     plugins: [
       new webpack.DefinePlugin({
+        __MAIN_STYLE__: `\`${fs.readFileSync(path.resolve(__dirname, 'src/style/main.css').replace(/\n/g, ''), 'utf8')}\``,
         __PACKAGE_NAME__: `"${package.name}"`,
         __PACKAGE_VERSION__: `"${package.version}"`,
         __IS_PRODUCTION_BUILD__: `${env.PRODUCTION === true}`
