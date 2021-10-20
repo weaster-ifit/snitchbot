@@ -1,4 +1,4 @@
-import { ReportLogs, LogsHandled } from './common';
+import { ReportLogs, LogsHandled } from './common/event-names';
 import loadBulk from './load-bulk';
 
 let maxLogLength = 50;
@@ -9,42 +9,42 @@ let hasInit = false;
 const logs = [];
 
 function getLogs() {
-	return logs;
+  return logs;
 }
 
 function log({ type, data, color }) {
-	logs.push({ type, data, color, t: new Date().toLocaleTimeString() });
-	if (logs.length > maxLogLength) {
-		logs.shift();
-	}
+  logs.push({ type, data, color, t: new Date().toLocaleTimeString() });
+  if (logs.length > maxLogLength) {
+    logs.shift();
+  }
 
-	window.dispatchEvent(new CustomEvent(ReportLogs, {
-		detail: getLogs()
-	}));
+  window.dispatchEvent(new CustomEvent(ReportLogs, {
+    detail: getLogs()
+  }));
 }
 
 function initialize({ condition } = {}) {
-	if (condition && typeof condition === 'function') {
-		initCondition = condition;
-	}
+  if (condition && typeof condition === 'function') {
+    initCondition = condition;
+  }
 
-	if (!hasInit && initCondition()) {
-		hasInit = true;
-		window.addEventListener(LogsHandled, () => logs = []);
-		loadBulk();
-	}
+  if (!hasInit && initCondition()) {
+    hasInit = true;
+    window.addEventListener(LogsHandled, () => logs = []);
+    loadBulk();
+  }
 }
 
 function init() {
-	try {
-		initialize();
-	} catch (e) {
-		window.addEventListener('DOMContentLoaded', initialize);
-	}
+  try {
+    initialize();
+  } catch (e) {
+    window.addEventListener('DOMContentLoaded', initialize);
+  }
 }
 
 export default {
-	init,
-	log
+  init,
+  log
 };
 

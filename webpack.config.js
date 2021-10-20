@@ -1,10 +1,11 @@
-const fs = require('fs');
-const path = require('path');
+const fs      = require('fs');
+const path    = require('path');
 const webpack = require('webpack');
-
 const package = require('./package.json');
 
 module.exports = (env) => {
+  const isProductionBuild = env.PRODUCTION === true;
+
   return {
     entry: {
       bulk: './src/bulk.ts',
@@ -17,7 +18,7 @@ module.exports = (env) => {
           use: [{
             loader: 'ts-loader',
             options: {
-              configFile: env.PRODUCTION === true
+              configFile: isProductionBuild
                 ? 'tsconfig.json'
                 : 'tsconfig.dev.json'
             }
@@ -39,7 +40,10 @@ module.exports = (env) => {
         __MAIN_STYLE__: `\`${fs.readFileSync(path.resolve(__dirname, 'src/style/main.css').replace(/\n/g, ''), 'utf8')}\``,
         __PACKAGE_NAME__: `"${package.name}"`,
         __PACKAGE_VERSION__: `"${package.version}"`,
-        __IS_PRODUCTION_BUILD__: `${env.PRODUCTION === true}`
+        __SCRIPT_SRC__: isProductionBuild
+          ? '"https://cdn.jsdelivr.net/npm/snitchbot/dist/bulk.js"'
+          : '"./dist/bulk.js"',
+        __IS_PRODUCTION_BUILD__: `${isProductionBuild}`
       })
     ]
   }

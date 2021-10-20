@@ -1,56 +1,31 @@
-import { ReportLogs, LogsHandled } from './common';
+import { ReportLogs, LogsHandled } from './common/event-names';
 import { getNextColor } from './color';
+import buildDOMElements from './dom/main';
 
-interface LogSyncEvent extends Event {
+interface LogEvent extends Event {
   detail: any
 }
 
-declare var __MAIN_STYLE__: string;
-declare var __PACKAGE_NAME__: string;
-declare var __PACKAGE_VERSION__: string;
-declare var __IS_PRODUCTION_BUILD__: boolean;
-
 (function() {
-  window.addEventListener(ReportLogs, (e: LogSyncEvent) => {
-  	printLogs(e.detail);
+
+  const logs = [];
+  const logColors = {};
+
+  window.addEventListener(ReportLogs, (e: LogEvent) => {
+    e.detail.forEach(log => logs.push(log));
+    printLogs({ logs, location: container });
     window.dispatchEvent(new CustomEvent(LogsHandled, {}));
   });
 
-  const logColors = {};
+  const { container } = buildDOMElements();
 
-  let open = false;
+  function printLogs({ logs, location }) {
+    while (location.firstChild) {
+      location.removeChild(location.firstChild);
+    }
 
-  const toggler = document.createElement('div');
-  toggler.className = 'toggler';
-  toggler.textContent = '+';
-  toggler.addEventListener('click', () => {
-  	open = !open;
-  	toggler.style.backgroundColor = open ? 'red' : 'green';
-  	toggler.style.transform = open ? 'rotateZ(135deg)' : 'rotateZ(0)';
-  	aside.className = open ? 'active' : '';
-  });
-  document.body.appendChild(toggler);
-
-  const style = document.createElement('style');
-  style.textContent = __MAIN_STYLE__;
-  document.body.appendChild(style);
-
-  const aside = document.createElement('aside');
-  document.body.appendChild(aside);
-
-  const header = document.createElement('div');
-  header.className = 'header';
-  const build = __IS_PRODUCTION_BUILD__ ? '' : '(local)';
-  header.textContent = `${__PACKAGE_NAME__} v${__PACKAGE_VERSION__} ${build}`;
-  aside.appendChild(header);
-
-  const debug = document.createElement('div');
-  debug.className = 'wrapper';
-  aside.appendChild(debug);
-
-  function printLogs(logs) {
-  	logs.forEach(log => {
-  		const { type, rgb } = log;
+    logs.forEach(log => {
+      const { type, rgb } = log;
       if (rgb) {
         log.rgb = rgb;
       } else {
@@ -59,14 +34,18 @@ declare var __IS_PRODUCTION_BUILD__: boolean;
         } 
         log.rgb = logColors[type];
       }
-  	});
+    });
 
-  	filterLogs({ logs });
+    filterLogs({ logs, location });
   }
 
-  function filterLogs({ logs, filter = () => true }) {
+  function filterLogs({
+    logs,
+    location,
+    filter = () => true
+  }) {
     logs.filter(filter)
-      .forEach(log => addLogToDOM(log));
+      .forEach(log => addLogToDOM(log, location));
   }
 
   function convertToString(nonString) {
@@ -77,7 +56,10 @@ declare var __IS_PRODUCTION_BUILD__: boolean;
     }
   }
 
-  function addLogToDOM({ type, data, rgb, t }) {
+  function addLogToDOM(
+    { type, data, rgb, t },
+    location
+  ) {
     const event = document.createElement('div');
     event.className = 'entry';
     event.style.backgroundColor = 'rgba(' + rgb.join(', ') + ', .4)';
@@ -101,6 +83,6 @@ declare var __IS_PRODUCTION_BUILD__: boolean;
       event.appendChild(entry);
     }
 
-    debug.insertBefore(event, debug.firstChild);
+    location.insertBefore(event, location.firstChild);
   }
 })();
