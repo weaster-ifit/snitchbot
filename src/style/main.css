@@ -46,6 +46,24 @@ aside.active {
     color: white;
     background-color: #111;
   }
+  aside .filter {
+    height: 2em;
+    display: flex;
+    overflow-x: scroll;
+    background-color: #555;
+  }
+    .filter .item {
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 22%;
+      box-sizing: border-box;
+      padding: 5px;
+      text-align: center;
+      color: white;
+      justify-content: center;
+    }
   aside .wrapper {
     height: 100%;
     overflow-y: scroll;
