@@ -1,6 +1,6 @@
 {
   "name": "snitchbot",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "GUI webview logging utility",
   "main": "dist/base.js",
   "scripts": {

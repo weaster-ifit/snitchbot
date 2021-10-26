@@ -7,7 +7,7 @@ declare var __PACKAGE_VERSION__: string;
 
 let open = false;
 
-export function buildDOMElements() {
+export function init() {
   const toggler = document.createElement('div');
   toggler.className = 'toggler';
   toggler.textContent = '+';
@@ -46,46 +46,6 @@ export function buildDOMElements() {
   }
 }
 
-export function addLogToDOM(
-  { type, data, rgb, t },
-  location
-) {
-  const event = document.createElement('div');
-  event.className = 'entry';
-  event.style.backgroundColor = 'rgba(' + rgb.join(', ') + ', .4)';
-  event.style.borderColor = 'rgb(' + rgb.join(', ') + ')';
-  const title = document.createElement('h2');
-  title.textContent = type;
-  title.style.backgroundColor = 'rgb(' + rgb.join(', ') + ')';
-  event.appendChild(title);
-  const time = document.createElement('div');
-  time.className = 'timestamp';
-  time.textContent = t;
-  event.appendChild(time);
-
-  if (data) {
-    const entry = document.createElement('pre');
-    const textContent = typeof data === 'string'
-      ? data
-      : convertToString(data);
-    entry.textContent = textContent;
-    title.addEventListener('click', () => navigator.clipboard.writeText(textContent));
-    event.appendChild(entry);
-  }
-
-  location.insertBefore(event, location.firstChild);
-}
-
-export function addLogTypeToDOM(type, color, location) {
-  const item = document.createElement('div');
-  item.className = 'item';
-  item.textContent = type;
-  console.log({ color });
-  item.style.backgroundColor = 'rgb(' + color.join(', ') + ')';
-  location.appendChild(item);
-}
-
 export default {
-  buildDOMElements,
-  addLogToDOM
+  init
 };

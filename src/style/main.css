@@ -51,6 +51,7 @@ aside.active {
     display: flex;
     overflow-x: scroll;
     background-color: #555;
+    cursor: default;
   }
     .filter .item {
       display: flex;
